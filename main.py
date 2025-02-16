@@ -112,8 +112,6 @@ async def pokeitem(interaction: discord.Interaction, argumento: str):
             itemembed.set_image(url=img_url)
             await interaction.response.send_message(embed= itemembed)
 
-            #await interaction.response.send_message(f"efecto de {item}: {efecto} \n {img_url}")
-
 
     except Exception as e:
         errorembed = discord.Embed(
