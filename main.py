@@ -96,10 +96,23 @@ async def pokeitem(interaction: discord.Interaction, argumento: str):
         if result == "not found":
             await interaction.response.send_message(f"ummm, de hecho, el pokemon {item} no existe :nerd:")
         else:
+
+            thumbnail = "https://cdn.discordapp.com/attachments/1298495312318693416/1340479011574513664/image.png?ex=67b281dd&is=67b1305d&hm=8423ead878c943d90b8a7480cbb5bc9d0c65f574c0c701e21ce08a8954763481&"
             efecto = result.json()['effect_entries'][0]['effect']
             img_url = result.json()['sprites']['default']
             print(img_url)
-            await interaction.response.send_message(f"efecto de {item}: {efecto} \n {img_url}")
+
+            itemembed = discord.Embed(
+                title=f"{item}",
+                description=f"efecto de {item}: {efecto}",
+                color = discord.Color.random()
+            )
+
+            itemembed.set_thumbnail(url=thumbnail)
+            itemembed.set_image(url=img_url)
+            await interaction.response.send_message(embed= itemembed)
+
+            #await interaction.response.send_message(f"efecto de {item}: {efecto} \n {img_url}")
 
 
     except Exception as e:
