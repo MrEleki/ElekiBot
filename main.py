@@ -91,10 +91,10 @@ async def poke(interaction: discord.Interaction, argumento: str):
 @client.tree.command(name="pokeitem", description="envia la descripción y foto de un item", guild=GUILD_ID)
 async def pokeitem(interaction: discord.Interaction, argumento: str):
     try:
-        item = argumento.split(" ", 1)[0]
+        item = argumento.replace(" ", "-" )
         result = requests.get(f"https://pokeapi.co/api/v2/item/{item}")
         if result == "not found":
-            await interaction.response.send_message(f"ummm, de hecho, el pokemon {item} no existe :nerd:")
+            await interaction.response.send_message(f"ummm, de hecho, el item {item} no existe :nerd:")
         else:
 
             thumbnail = "https://cdn.discordapp.com/attachments/1298495312318693416/1340479011574513664/image.png?ex=67b281dd&is=67b1305d&hm=8423ead878c943d90b8a7480cbb5bc9d0c65f574c0c701e21ce08a8954763481&"
@@ -103,8 +103,8 @@ async def pokeitem(interaction: discord.Interaction, argumento: str):
             print(img_url)
 
             itemembed = discord.Embed(
-                title=f"{item}",
-                description=f"efecto de {item}: {efecto}",
+                title=f"{argumento}",
+                description=f"efecto de {argumento}: {efecto}",
                 color = discord.Color.random()
             )
 
@@ -116,8 +116,14 @@ async def pokeitem(interaction: discord.Interaction, argumento: str):
 
 
     except Exception as e:
-        print (f"error: {e}")
-        await interaction.response.send_message(f"ummm, de hecho, el item {item} no existe :nerd:")
+        errorembed = discord.Embed(
+            title=f"ups, ¡he fallado en algo!",
+            description="mis habilidades con el código dignas de un neandertal causaron esto, perdón",
+            color=discord.Color.red()
+        )
+        errorembed.add_field(name="error:", value=f"{e}", inline=True)
+        print(f"error: {e}")
+        await interaction.response.send_message(embed=errorembed)
 
 @client.tree.command(name="saluda", description="hola amiga", guild=GUILD_ID)
 async def saludar(interaction: discord.Interaction):
