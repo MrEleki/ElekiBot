@@ -6,6 +6,7 @@ from discord.ext import  commands
 from discord import app_commands
 import secretoso
 from secretoso import TOKEN
+from secretoso import ID
 #secretoso es un archivo de python en el cual guardé mi token de del bot, el cual por obvias razones no esta en el repositorio
 import requests
 
@@ -15,7 +16,7 @@ class Client(commands.Bot):
         print(f'logged on as {self.user}')
 
         try:
-            guild = discord.Object(id=1051930181637513316)
+            guild = discord.Object(id=ID)
             synced = await self.tree.sync(guild=guild)
             print(f'sincronizado {len(synced)} comandos a el servidor {guild.id}')
             print(synced)
@@ -30,15 +31,15 @@ class Client(commands.Bot):
         if message.content.startswith('hola'):
             await message.channel.send(f'hola {message.author} \n https://tenor.com/view/haunter-wave-cobblemon-gif-9636032239076073245')
 
-    async def on_reaction_add(self, reaction, user):
-        await reaction.message.channel.send('reaccionaste omg')
+    #async def on_reaction_add(self, reaction, user):
+        #await reaction.message.channel.send('reaccionaste omg')
 
 
 intents = discord.Intents.default()
 intents.message_content = True
 client = Client(command_prefix="&", intents=intents)
 
-GUILD_ID = discord.Object(id=1051930181637513316)
+GUILD_ID = discord.Object(id=ID)
 
 @client.tree.command(name="poke", description="envia la foto de un pokemon", guild=GUILD_ID)
 async def poke(interaction: discord.Interaction, argumento: str):
@@ -82,9 +83,10 @@ async def poke(interaction: discord.Interaction, argumento: str):
     except Exception as e:
         errorembed = discord.Embed(
             title=f"ups, ¡he fallado en algo!",
-            description="mis habilidades con el código dignas de un neandertal causaron esto, perdón",
+            description="Fué un error mio? fué un error tuyo? sinceramente no lo se",
             color=discord.Color.red()
         )
+        errorembed.set_image(url="https://cdn.discordapp.com/attachments/1298495312318693416/1341499307869606041/EdQSnJiXoAIygfb.jpg?ex=67b63816&is=67b4e696&hm=5157e2b0a8bd123678bb2565623fe27f60f867bf5446e165f5f4cb3fd78edc72&")
         errorembed.add_field(name="error:", value=f"{e}", inline=True)
         print (f"error: {e}")
         await interaction.response.send_message(embed=errorembed)
@@ -117,9 +119,10 @@ async def pokeitem(interaction: discord.Interaction, argumento: str):
     except Exception as e:
         errorembed = discord.Embed(
             title=f"ups, ¡he fallado en algo!",
-            description="mis habilidades con el código dignas de un neandertal causaron esto, perdón",
+            description="fué un error mio? Fué un error tuyo? no lo se sinceramente",
             color=discord.Color.red()
         )
+        errorembed.set_image(url="https://cdn.discordapp.com/attachments/1298495312318693416/1341499307869606041/EdQSnJiXoAIygfb.jpg?ex=67b63816&is=67b4e696&hm=5157e2b0a8bd123678bb2565623fe27f60f867bf5446e165f5f4cb3fd78edc72&")
         errorembed.add_field(name="error:", value=f"{e}", inline=True)
         print(f"error: {e}")
         await interaction.response.send_message(embed=errorembed)
@@ -127,11 +130,11 @@ async def pokeitem(interaction: discord.Interaction, argumento: str):
 @client.tree.command(name="saluda", description="hola amiga", guild=GUILD_ID)
 async def saludar(interaction: discord.Interaction):
     helloembed = discord.Embed(
-        title=f"Hola amiga",
+        title=f"Hola bobin",
         description=f"como estas",
         color=discord.Color.random()
     )
-    helloembed.set_image(url="https://tenor.com/view/haunter-wave-cobblemon-gif-9636032239076073245")
+    helloembed.set_image(url="https://media1.tenor.com/m/hboQRH5XXx0AAAAd/haunter-wave.gif")
     await interaction.response.send_message(embed = helloembed)
 
 @client.tree.command(name="calcula", description="1. suma 2. resta. 3. mult. 4. div", guild=GUILD_ID)
@@ -176,9 +179,10 @@ async def img(interaction: discord.Interaction, busqueda: str):
 
         errorembed = discord.Embed(
             title=f"ups, ¡he fallado en algo!",
-            description="mis habilidades con el código dignas de un neandertal causaron esto, perdón",
+            description="fué un error mio? Fué un error tuyo? no lo se sinceramente",
             color=discord.Color.red()
         )
+        errorembed.set_image("https://cdn.discordapp.com/attachments/1298495312318693416/1341499307869606041/EdQSnJiXoAIygfb.jpg?ex=67b63816&is=67b4e696&hm=5157e2b0a8bd123678bb2565623fe27f60f867bf5446e165f5f4cb3fd78edc72&")
         errorembed.add_field(name="error:", value=f"{e}", inline=True)
         print(f"error: {e}")
         await interaction.response.send_message(embed=errorembed)
