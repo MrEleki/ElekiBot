@@ -151,24 +151,38 @@ async def calcular(interaction: discord.Interaction, operacion: int, num1: int, 
 @client.tree.command(name="img", description="primera img de google", guild=GUILD_ID)
 async def img(interaction: discord.Interaction, busqueda: str):
 
-    parametros = {
-        "q": busqueda,
-        "tbm": "isch",
-    }
 
-    html = requests.get("https://www.google.com/search", params=parametros, timeout=30)
-    html.text
-    soup = bs(html.content)
-    images = soup.select('div img')
-    img_url = images[1]['src']
+    try:
+        parametros = {
+            "q": busqueda,
+            "tbm": "isch",
+        }
 
-    img_embed = discord.Embed(
-        title=f"{busqueda}",
-        description="aquí esta una imagen de lo que buscaste",
-        color=discord.Color.random()
-    )
-    img_embed.set_image(url=img_url)
-    await interaction.response.send_message(embed=img_embed)
+        html = requests.get("https://www.google.com/search", params=parametros, timeout=30)
+        html.text
+        soup = bs(html.content)
+        images = soup.select('div img')
+        img_url = images[1]['src']
+
+        img_embed = discord.Embed(
+            title=f"{busqueda}",
+            description="aquí esta una imagen de lo que buscaste",
+            color=discord.Color.random()
+        )
+        img_embed.set_image(url=img_url)
+        await interaction.response.send_message(embed=img_embed)
+
+    except Exception as e:
+
+        errorembed = discord.Embed(
+            title=f"ups, ¡he fallado en algo!",
+            description="mis habilidades con el código dignas de un neandertal causaron esto, perdón",
+            color=discord.Color.red()
+        )
+        errorembed.add_field(name="error:", value=f"{e}", inline=True)
+        print(f"error: {e}")
+        await interaction.response.send_message(embed=errorembed)
+
 
 
 client.run(TOKEN)
