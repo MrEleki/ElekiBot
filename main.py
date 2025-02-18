@@ -1,5 +1,6 @@
+from email.policy import default
 from logging import exception
-
+from bs4 import BeautifulSoup as bs
 import discord
 from discord.ext import  commands
 from discord import app_commands
@@ -14,7 +15,7 @@ class Client(commands.Bot):
         print(f'logged on as {self.user}')
 
         try:
-            guild = discord.Object(id=949435404359180318)
+            guild = discord.Object(id=1051930181637513316)
             synced = await self.tree.sync(guild=guild)
             print(f'sincronizado {len(synced)} comandos a el servidor {guild.id}')
             print(synced)
@@ -37,7 +38,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = Client(command_prefix="&", intents=intents)
 
-GUILD_ID = discord.Object(id=949435404359180318)
+GUILD_ID = discord.Object(id=1051930181637513316)
 
 @client.tree.command(name="poke", description="envia la foto de un pokemon", guild=GUILD_ID)
 async def poke(interaction: discord.Interaction, argumento: str):
@@ -125,7 +126,13 @@ async def pokeitem(interaction: discord.Interaction, argumento: str):
 
 @client.tree.command(name="saluda", description="hola amiga", guild=GUILD_ID)
 async def saludar(interaction: discord.Interaction):
-    await interaction.response.send_message("https://tenor.com/view/haunter-wave-cobblemon-gif-9636032239076073245")
+    helloembed = discord.Embed(
+        title=f"Hola amiga",
+        description=f"como estas",
+        color=discord.Color.random()
+    )
+    helloembed.set_image(url="https://tenor.com/view/haunter-wave-cobblemon-gif-9636032239076073245")
+    await interaction.response.send_message(embed = helloembed)
 
 @client.tree.command(name="calcula", description="1. suma 2. resta. 3. mult. 4. div", guild=GUILD_ID)
 async def calcular(interaction: discord.Interaction, operacion: int, num1: int, num2: int):
@@ -140,6 +147,28 @@ async def calcular(interaction: discord.Interaction, operacion: int, num1: int, 
             await interaction.response.send_message(f"la división da: {num1 / num2}")
         case _:
             await interaction.response.send_message(f"COÑO LEE LA DESCRIPCIÓN DEL COMANDO, ENERGUMENO")
+
+@client.tree.command(name="img", description="primera img de google", guild=GUILD_ID)
+async def img(interaction: discord.Interaction, busqueda: str):
+
+    parametros = {
+        "q": busqueda,
+        "tbm": "isch",
+    }
+
+    html = requests.get("https://www.google.com/search", params=parametros, timeout=30)
+    html.text
+    soup = bs(html.content)
+    images = soup.select('div img')
+    img_url = images[1]['src']
+
+    img_embed = discord.Embed(
+        title=f"{busqueda}",
+        description="aquí esta una imagen de lo que buscaste",
+        color=discord.Color.random()
+    )
+    img_embed.set_image(url=img_url)
+    await interaction.response.send_message(embed=img_embed)
 
 
 client.run(TOKEN)
