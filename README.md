@@ -1,6 +1,3 @@
-*_el ElekiBot_*
-
-un bot de discord q ando haciendo pq no tengo nada bueno que hacer con mi vida
 
 comandos:
 
